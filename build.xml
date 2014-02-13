@@ -1,1 +1,7 @@
-build.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="CI Test" basedir="." default="hello">
+    <property file="build.properties" />
+    <target name="hello">
+        <echo msg="Hello World!!" />
+    </target>
+</project>
