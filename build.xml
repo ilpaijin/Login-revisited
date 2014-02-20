@@ -4,4 +4,30 @@
     <target name="hello">
         <echo msg="Hello World!!" />
     </target>
+    <target name="tests" description="Lancia i test automatici sulla code base">
+        <phpcodesniffer 
+            standard="Zend" 
+            format="summary" 
+            file="${path}" 
+            allowedFileExtensions="php php5 inc" 
+            haltonwarning="true" 
+            haltonerror="true" />
+        <phplint>
+            <fileset dir="web">
+                <include name="**/*.php"/>
+            </fileset>
+            <fileset dir="_tests">
+                <include name="**/*.php"/>
+            </fileset>
+        </phplint>
+        <phpunit bootstrap="./application/bootstrap.php"
+                haltonfailure="true" haltonerror="true">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="tests">
+                    <include name="**/*Test*.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
 </project>

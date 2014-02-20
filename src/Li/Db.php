@@ -1,6 +1,6 @@
 <?php
 
-namespace classes;
+namespace Li;
 
 use \PDO;
 
@@ -49,6 +49,12 @@ class Db
     private $count = 0;
 
     /**
+     * [$fetchMode description]
+     * @var [type]
+     */
+    private $fetchMode = PDO::FETCH_OBJ;
+
+    /**
      * [__construct description]
      */
     private function __construct()
@@ -60,6 +66,15 @@ class Db
         {
             die($e->getMessage());
         }
+    }
+
+    /**
+     * [__clone description]
+     * @return [type] [description]
+     */
+    public function __clone()
+    {
+
     }
 
     /**
@@ -101,7 +116,7 @@ class Db
 
             if($this->query->execute())
             {
-                $this->results = $this->query->fetchAll(PDO::FETCH_OBJ);
+                $this->results = $this->query->fetchAll($this->fetchMode);
                 $this->count = $this->query->rowCount();
             } else 
             {
@@ -114,14 +129,14 @@ class Db
 
     /**
      * [action description]
-     * @param  [type] $method [description]
+     * @param  [type] $action [description]
      * @param  [type] $table  [description]
      * @param  [type] $fields [description]
      * @return [type]         [description]
      */
-    public function action($method, $table, $where)
+    public function action($action, $table, $where)
     {
-        $sql = "{$method} FROM {$table}";
+        $sql = "{$action} FROM {$table}";
 
         if(count($where) === 3)
         {
@@ -205,14 +220,16 @@ class Db
      */
     public function update($table, $id, $fields = array())
     {
-        if($fields)
+        if(!$fields)
         {
-            $values = '';
+            throw new \InvalidArgumentException();
+        } 
+        
+        $values = '';
 
-            foreach($fields as $name => $value)
-            {
-                $values .= $name.'= ?' . (end($fields) != $value ? ', ' : '');
-            }
+        foreach($fields as $name => $value)
+        {
+            $values .= $name.'= ?' . (end($fields) != $value ? ', ' : '');
         }
 
         $sql = "UPDATE {$table} SET {$values} WHERE id = {$id}";

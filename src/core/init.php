@@ -2,6 +2,8 @@
 
 session_start();
 
+define('BASEDIR', __DIR__.'/../');
+
 $GLOBALS['config'] = array(
     'mysql' => array(
         'host' => '127.0.0.1',
@@ -14,17 +16,19 @@ $GLOBALS['config'] = array(
         'cookie_expiry' => 604800,  
     ),
     'session' => array(
-        'session_name' => 'user' 
+        'session_name' => 'user',
+        'csrf-token' => 'csrf-token', 
     ) 
 );
 
 spl_autoload_register(function($class)
 {
-    $class = str_replace('\\', DIRECTORY_SEPARATOR,$class) . '.php';
+    $class = BASEDIR . str_replace('\\', DIRECTORY_SEPARATOR,$class) . '.php';
+
     if(file_exists($class))
     {
         require_once $class;
     }
 });
 
-require_once "functions/sanitize.php";
+require_once __DIR__."/../functions/sanitize.php";

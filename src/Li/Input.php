@@ -1,6 +1,6 @@
 <?php
 
-namespace classes;
+namespace Li;
 
 /**
 * Input class
@@ -47,5 +47,14 @@ class Input
         }
 
         return '';
+    }
+
+    /**
+     * [all description]
+     * @return [type] [description]
+     */
+    public static function all()
+    {
+        return array('POST' => $_POST) + array('GET' => $_GET);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace classes;
+namespace Li;
 
 /**
 * Config class
